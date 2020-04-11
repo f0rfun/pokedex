@@ -5,7 +5,6 @@
 }
 
 .masonry .grid {
-  display: inline-block;
   margin-bottom: 16px;
   position: relative;
   background-image: linear-gradient(
