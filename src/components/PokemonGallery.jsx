@@ -27,10 +27,15 @@ const FetchPokemonData = () => {
       setIsError(false);
       setIsLoading(true);
       try {
-        const resp = await axios.get(
+        const allPokemons = await axios.get(
           "https://pokeapi.co/api/v2/pokemon?limit=151"
         );
-        updateData(resp.data);
+
+        const pokemonData = await Promise.all(
+          allPokemons.data.results.map((pokemon) => axios.get(pokemon.url))
+        );
+
+        updateData(pokemonData);
       } catch (e) {
         setIsError({ message: e.response.data, isError: true });
       }
@@ -46,14 +51,27 @@ const PokemonGallery = () => {
 
   return (
     <Fragment>
-      <div>
-        {error.isError && <div>{error.message}</div>}
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          data && <PokemonCard data={data} />
-        )}
-      </div>
+      {error.isError && <div>{error.message}</div>}
+      {isLoading ? (
+        <div className="loadingContainer">
+          <div id="floatingBarsG">
+            <div class="blockG" id="rotateG_01"></div>
+            <div class="blockG" id="rotateG_02"></div>
+            <div class="blockG" id="rotateG_03"></div>
+            <div class="blockG" id="rotateG_04"></div>
+            <div class="blockG" id="rotateG_05"></div>
+            <div class="blockG" id="rotateG_06"></div>
+            <div class="blockG" id="rotateG_07"></div>
+            <div class="blockG" id="rotateG_08"></div>
+          </div>
+        </div>
+      ) : (
+        data && (
+          <div className="masonry">
+            <PokemonCard pokemons={data} />
+          </div>
+        )
+      )}
     </Fragment>
   );
 };

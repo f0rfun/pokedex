@@ -3,11 +3,7 @@ import PokemonGallery from "./components/PokemonGallery";
 import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <PokemonGallery />
-    </div>
-  );
+  return <PokemonGallery />;
 }
 
 export default App;
